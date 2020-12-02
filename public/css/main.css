@@ -101,9 +101,23 @@ main {
   cursor: pointer;
   padding: 12px;
 }
+.btn_delete {
+  font: inherit;
+  border-style: hidden;
+  color: black;
+  background: aqua;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 12px;
+}
 
 .btn:hover,
 .btn:active {
   background-color: blue;
+  color: white;
+}
+.btn_delete:hover,
+.btn_delete:active {
+  background-color: red;
   color: white;
 }

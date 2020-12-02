@@ -16,6 +16,22 @@
     height: 2rem;
 }
 
+.form-control textarea{
+    display: block;
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+
+.form-control textarea{
+    border: 1px solid #a1a1a1;
+    font: inherit;
+    border-radius: 2px;
+    height: 5rem;
+}
+
 .form-control input:focus {
+    outline-color: #00695c;
+}
+.form-control textarea:focus {
     outline-color: #00695c;
 }
