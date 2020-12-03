@@ -1,37 +1,29 @@
-const fs = require("fs");
-const path = require("path");
-const p = path.join(
-  path.dirname(require.main.filename),
-  "data",
-  "products.json"
-);
-const getProductsFromFile = (cb) => {
-  fs.readFile(p, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
-      cb(JSON.parse(fileContent));
-    }
-  });
-};
-module.exports = class Product {
-  constructor(title, imageUrl, price, description) {
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
-  }
+const mongoose = require("mongoose");
+const User = require("./user");
+const Schema = mongoose.Schema;
 
-  save() {
-    getProductsFromFile((products) => {
-      products.push(this);
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        console.log(err);
-      });
-    });
-  }
+const productSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+});
 
-  static fetchAll(cb) {
-    getProductsFromFile(cb);
-  }
-};
+module.exports = mongoose.model("Product", productSchema);
