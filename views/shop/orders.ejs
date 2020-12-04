@@ -4,6 +4,16 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
+        <% if (errorMessage.length > 0) { %>
+            <div class="user-message user-message--error">
+                <%= errorMessage %>
+            </div>
+            <% } %>
+            <% if (success.length > 0) { %>
+                <div class="user-message user-message--success">
+                    <%= success %>
+                </div>
+                <% } %>
         <main>
             <% if (orders.length <= 0) { %>
                 <h1>Nothing there!</h1>
@@ -13,8 +23,8 @@
                         <li class="orders__item">
                             <h1>Order - # <%= order._id %></h1>
                             <ul class="orders__products">
-                                <% order.items.forEach(product => { %>
-                                    <li class="orders__products-item"><%= product.title %> (<%= product.quantity %>)</li>
+                                <% order.products.forEach(p => { %>
+                                    <li class="orders__products-item"><%= p.product.title %> (<%= p.quantity %>) - ₹<%= p.product.price*p.quantity %></li>
                                 <% }); %>
                             </ul>
                         </li>

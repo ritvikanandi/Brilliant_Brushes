@@ -30,8 +30,8 @@
 }
 
 .form-control input:focus {
-    outline-color: #00695c;
+    outline-color: blue;
 }
 .form-control textarea:focus {
-    outline-color: #00695c;
+    outline-color: blue;
 }

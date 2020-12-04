@@ -2,11 +2,14 @@
     width: 20rem;
     max-width: 90%;
     margin: auto;
+    display: block;
 }
 
 .product-item {
     width: 20rem;
     max-width: 95%;
+    margin: 1rem;
+    align-items: center !important;
 }
 
 .product__title {

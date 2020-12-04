@@ -17,10 +17,18 @@
   },
   "homepage": "https://github.com/ritvikanandi/Shopping_hub#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^3.1.0",
+    "csurf": "^1.11.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "mongodb": "^4.1.1",
-    "mongoose": "^6.0.2"
+    "mongoose": "^6.0.2",
+    "nodemailer": "^6.6.3",
+    "nodemailer-sendgrid-transport": "^0.2.0"
   }
 }

@@ -23,6 +23,7 @@ exports.postAddProduct = (req, res, next) => {
     .save()
     .then((result) => {
       console.log("Created Product");
+      req.flash("success", "Product added successfully!");
       res.redirect("/admin/products");
     })
     .catch((err) => {
@@ -68,6 +69,7 @@ exports.postEditProduct = (req, res, next) => {
     })
     .then((result) => {
       console.log("UPDATED PRODUCT!");
+      req.flash("success", "Product updated successfully!");
       res.redirect("/admin/products");
     })
     .catch((err) => console.log(err));
@@ -79,6 +81,8 @@ exports.getProducts = (req, res, next) => {
         prods: products,
         pageTitle: "Admin Products",
         path: "/admin/products",
+        errorMessage: req.flash("error"),
+        success: req.flash("success"),
       });
     })
     .catch((err) => console.log(err));
@@ -88,6 +92,7 @@ exports.postDeleteProduct = (req, res, next) => {
   Product.findByIdAndRemove(prodId)
     .then(() => {
       console.log("DESTROYED PRODUCT");
+      req.flash("error", "Product deleted successfully!");
       res.redirect("/admin/products");
     })
     .catch((err) => console.log(err));

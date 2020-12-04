@@ -1,9 +1,9 @@
 const Product = require("../models/product");
+const Order = require("../models/order");
 
 exports.getProducts = (req, res, next) => {
   Product.find()
     .then((products) => {
-      console.log(products);
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "All Products",
@@ -35,6 +35,8 @@ exports.getIndex = (req, res, next) => {
         prods: products,
         pageTitle: "Shop",
         path: "/",
+        errorMessage: req.flash("error"),
+        success: req.flash("success"),
       });
     })
     .catch((err) => {
@@ -50,6 +52,8 @@ exports.getCart = (req, res, next) => {
         path: "/cart",
         pageTitle: "Your Cart",
         products: products,
+        errorMessage: req.flash("error"),
+        success: req.flash("success"),
       });
     })
     .catch((err) => console.log(err));
@@ -61,7 +65,7 @@ exports.postCart = (req, res, next) => {
       return req.user.addToCart(product);
     })
     .then((result) => {
-      console.log(result);
+      req.flash("success", "Added to cart successfully!");
       res.redirect("/cart");
     });
 };
@@ -70,34 +74,55 @@ exports.postCartDeleteProduct = (req, res, next) => {
   req.user
     .removeFromCart(prodId)
     .then((result) => {
+      req.flash("error", "Product deleted!");
       res.redirect("/cart");
     })
     .catch((err) => console.log(err));
 };
 
 exports.postOrder = (req, res, next) => {
-  let fetchedCart;
   req.user
-    .addOrder()
+    .populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items.map((item) => {
+        return {
+          quantity: item.quantity,
+          product: { ...item.productId._doc },
+        };
+      });
+      const order = new Order({
+        user: {
+          email: req.user.email,
+          userId: req.user,
+        },
+        products: products,
+      });
+      return order.save();
+    })
     .then((result) => {
+      return req.user.clearCart();
+    })
+    .then(() => {
+      req.flash("success", "Order saved!");
       res.redirect("/orders");
     })
     .catch((err) => console.log(err));
 };
 exports.getOrders = (req, res, next) => {
-  req.user
-    .getOrders()
+  Order.find({ "user.userId": req.user._id })
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",
         pageTitle: "Your Orders",
         orders: orders,
+        errorMessage: req.flash("error"),
+        success: req.flash("success"),
       });
     })
     .catch((err) => console.log(err));
 };
 exports.getCheckout = (req, res, next) => {
-  res.render("shop/checout", {
+  res.render("shop/checkout", {
     path: "/checkout",
     pageTitle: "Checkout",
   });

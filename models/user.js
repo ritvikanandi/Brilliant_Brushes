@@ -2,13 +2,17 @@ const mongoose = require("mongoose");
 const Product = require("./product");
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
     required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
   cart: {
     items: [
@@ -55,6 +59,11 @@ userSchema.methods.removeFromCart = function (productId) {
     return item.productId.toString() !== productId.toString();
   });
   this.cart.items = updatedCartItems;
+  return this.save();
+};
+//Clear the cart items
+userSchema.methods.clearCart = function () {
+  this.cart = { items: [] };
   return this.save();
 };
 module.exports = mongoose.model("User", userSchema);

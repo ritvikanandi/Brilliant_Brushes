@@ -28,8 +28,10 @@ main {
 
 .main-header__nav {
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .main-header__item-list {
@@ -54,8 +56,22 @@ main {
 .main-header__item a.active {
   color: blue;
 }
+.main-header__item button {
+  text-decoration: none !important;
+  color: black !important;
+  border-style: hidden !important;
+  background-color: aqua !important;
+  font-size: 1rem !important;
+  cursor: pointer;
+}
+
+.main-header__item button:hover,
+.main-header__item button:active{
+  color: blue !important;
+  border-style: hidden !important;
+}
 .mobile-nav {
-  width: 30rem;
+  width: 12rem;
   height: 100vh;
   max-width: 90%;
   position: fixed;
@@ -80,32 +96,41 @@ main {
 }
 
 .mobile-nav__item {
-  margin: 1rem;
+  margin: 0.2rem;
+  margin-bottom: 1rem !important;
   padding: 0;
 }
 
-.mobile-nav__item a {
+.mobile-nav__item a,
+.mobile-nav__item button {
+  font: inherit;
   text-decoration: none;
   color: black;
-  font-size: 1.5rem;
-  padding: 0.5rem 2rem;
+  font-size: 15px;
+  padding: 0.5rem 0.8rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .mobile-nav__item a:active,
 .mobile-nav__item a:hover,
-.mobile-nav__item a.active {
+.mobile-nav__item a.active,
+.mobile-nav__item button:hover,
+.mobile-nav__item button:active {
   background: aqua;
   color: blue;
   border-radius: 3px;
 }
 
 #side-menu-toggle {
-  border: 1px solid black;
+  border-style: hidden;
   font: inherit;
   padding: 0.5rem;
   display: block;
   background: transparent;
   color: black;
+  font-variant: small-caps;
   cursor: pointer;
 }
 
@@ -139,7 +164,6 @@ main {
 .card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 }
-
 .card__header,
 .card__content {
   padding: 1rem;
@@ -165,6 +189,7 @@ main {
     text-align: center;
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
 .card__actions button,
@@ -174,7 +199,6 @@ main {
 
 .btn {
   display: inline-block !important;
-  margin-top: 0.8rem !important;
   text-decoration: none;
   font: inherit;
   border-style: hidden;
@@ -183,11 +207,9 @@ main {
   border-radius: 3px;
   cursor: pointer;
   padding: 1rem;
-  margin-left: 2rem !important;
 }
 .btn_delete {
   display: inline-block !important;
-  margin-top: 0.8rem !important;
   text-decoration: none;
   font: inherit;
   border-style: hidden;
@@ -196,7 +218,6 @@ main {
   border-radius: 3px;
   cursor: pointer;
   padding: 1rem;
-  margin-left: 1.2rem !important;
 }
 
 .btn:hover,
@@ -209,12 +230,33 @@ main {
   background-color: red;
   color: white;
 }
-@media (min-width: 768px) {
+.user-message {
+  margin: auto;
+  width: 50vw;
+  border: 1px solid blue;
+  padding: 1rem;
+  border-radius: 3px;
+  background-color: lightblue;
+  text-align: center;
+}
+.user-message--error{
+  border: 1px solid red;
+  background-color: lightcoral; 
+}
+.user-message--success{
+  border: 1px solid darkgreen;
+  background-color: lightgreen; 
+}
+@media only screen and (max-width: 779px) {
   .main-header__nav {
-    display: flex;
+    display: none !important;
   }
-
+  .user-message{
+    width: 80vw;
+  }
+}
+@media only screen and (min-width: 780px) {
   #side-menu-toggle {
-    display: none;
+    display: none !important;
   }
 }
