@@ -16,32 +16,43 @@
                     <%= success %>
                 </div>
                 <% } %>
-        <% if (prods.length > 0) { %>
-            <div class="grid">
-                <% for (let product of prods) { %>
-                    <article class="card product-item">
-                        <header class="card__header">
-                            <h1 class="product__title"><%= product.title %></h1>
-                        </header>
-                        <div class="card__image">
-                            <img src="<%= product.imageUrl %>"
-                                alt="<%= product.title %>">
-                        </div>
-                        <div class="card__content">
-                            <h2 class="product__price">₹<%= product.price %></h2>
-                            <p class="product__description"><%= product.description %></p>
-                        </div>
-                        <div class="card__actions">
-                            <a href="/products/<%= product.id %>" class="btn">Details</a>
-                            <% if(isAuthenticated) { %>
-                                <%- include('../includes/add-to-cart.ejs', {product: product}) %>
-                                <% } %>
-                        </div>
-                    </article>
-                <% } %>
+                <div class="container">
+            <div class="jumbotron">
+                <h1 class="display-4">Welcome to Brilliant Brushes!</h1>
+                <p class="lead">Find yourself amidst the light of beautiful colors...</p>
+                <hr class="my-4">
+                <p class="lead">For all the artists and art lovers out there..... </p>
+                <p class="lead">
+                  <a class="btn btn-primary btn-lg" href="/products" role="button">Explore</a>
+                </p>
+              </div>
             </div>
-        <% } else { %>
-            <h1>No Products Found!</h1>
-        <% } %>
+              <div class="container grid-container">
+                <div class="grid-container-item">
+                <h2>Create an Account</h2>
+              <i class="fa fa-user-plus" style="font-size:100px;"></i>
+            </div>
+            <div class="grid-container-item">
+                <h2>Upload</h2>
+                <i class="fa fa-upload"  style="font-size:100px;"></i>
+            </div>
+            </div>
+            <div class="grid-container-item">
+                <h1>Buy Others!</h1>
+            </div>
+            <div class="container grid-container">
+                <div class="grid-container-item">
+                    <h2>Login</h2>
+                  <i class="fa fa-user-plus" style="font-size:100px;"></i>
+                </div>
+            <div class="grid-container-item">
+                <h2>Order Now</h2>
+                <i class="fa fa-shopping-basket"  style="font-size:90px;"></i>
+            </div>
+            <div class="grid-container-item">
+                <h2>Pay</h2>
+                <i class="fa fa-cc-stripe" style="font-size:90px;" ></i>
+            </div>
+            </div>
     </main>
 <%- include('../includes/footer.ejs') %>

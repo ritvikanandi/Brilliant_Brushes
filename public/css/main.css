@@ -71,7 +71,7 @@ main {
   border-style: hidden !important;
 }
 .mobile-nav {
-  width: 12rem;
+  width: 15rem;
   height: 100vh;
   max-width: 90%;
   position: fixed;
@@ -160,7 +160,21 @@ main {
   justify-content: space-around;
   align-items: stretch;
 }
-
+.jumbotron{
+  background-color: white;
+}
+.grid-container{
+  display : flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.grid-container-item{
+  display : flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5vh;
+  margin-right: 5vh !important;
+}
 .card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 }
@@ -175,13 +189,13 @@ main {
 .card__content p {
   margin: 0;
 }
-
-.card__image {
+.card__image{
   width: 100%;
+  height: 20rem;
 }
-
-.card__image img {
+.card__image img{
   width: 100%;
+  height: 20rem;
 }
 
 .card__actions {
@@ -245,7 +259,32 @@ main {
 }
 .user-message--success{
   border: 1px solid darkgreen;
-  background-color: lightgreen; 
+  background-color: #b6ecb6; 
+}
+.image-details{
+  object-fit: contain;
+}
+.image-details-img{
+  width: 50vw !important;
+  height: 60vh !important;
+}
+.pagination{
+  margin-top: 2rem;
+  text-align: center;
+  justify-content: center;
+}
+.pagination a{
+  text-align: center;
+  text-decoration: none;
+  padding: 0.5rem;
+  border: 1px solid aqua;
+  margin: 0 1rem;
+}
+.pagination a:hover,
+.pagination a:active,
+.pagination a.active{
+  background-color: blue;
+  color: white;
 }
 @media only screen and (max-width: 779px) {
   .main-header__nav {
@@ -253,6 +292,14 @@ main {
   }
   .user-message{
     width: 80vw;
+  }
+  .grid-container{
+    flex-direction: column;
+    justify-content: center !important;
+  }
+  .image-details-img{
+    width: 80vw !important;
+    height: 60vh !important;
   }
 }
 @media only screen and (min-width: 780px) {

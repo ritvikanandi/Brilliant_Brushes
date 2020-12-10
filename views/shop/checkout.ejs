@@ -1,8 +1,36 @@
 <%- include('../includes/header.ejs') %>
+<link rel="stylesheet" href="/css/cart.css">
 </head>
 
 <body>
     <%- include('../includes/navigation.ejs') %>
-    <h1>Checkout</h1>
+    <% if (errorMessage.length > 0) { %>
+        <div class="user-message user-message--error">
+            <%= errorMessage %>
+        </div>
+        <% } %>
+        <% if (success.length > 0) { %>
+            <div class="user-message user-message--success">
+                <%= success %>
+            </div>
+            <% } %>
+  <main>
+    <ul class="cart__item-list">
+        <% products.forEach(p => { %>
+            <li class="cart__item">
+                <h1><%= p.productId.title %></h1>
+                <h2>Quantity: <%= p.quantity %></h2>
+                <form action="/cart-delete-item" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" value="<%= p.productId._id %>" name="productId">
+                    <button class="btn_delete" type="submit">Delete</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+    <div>
+        <h2>Total: <%= totalSum %></h2>
+    </div>
+  </main>
 
 <%- include('../includes/footer.ejs') %>
