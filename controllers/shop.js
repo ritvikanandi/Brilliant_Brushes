@@ -3,8 +3,9 @@ const path = require("path");
 const PDFDocument = require("pdfkit");
 const Product = require("../models/product");
 const Order = require("../models/order");
+const stripe = require("stripe")(`${process.env.STRIPE_KEY}`);
 
-const items_per_page = 3;
+const items_per_page = 4;
 exports.getProducts = (req, res, next) => {
   if (!req.user) {
     const page = +req.query.page || 1;
@@ -153,6 +154,34 @@ exports.postOrder = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+exports.getCheckoutSuccess = (req, res, next) => {
+  req.user
+    .populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items.map((item) => {
+        return {
+          quantity: item.quantity,
+          product: { ...item.productId._doc },
+        };
+      });
+      const order = new Order({
+        user: {
+          email: req.user.email,
+          userId: req.user,
+        },
+        products: products,
+      });
+      return order.save();
+    })
+    .then((result) => {
+      return req.user.clearCart();
+    })
+    .then(() => {
+      req.flash("success", "Payment received!");
+      res.redirect("/orders");
+    })
+    .catch((err) => console.log(err));
+};
 exports.getOrders = (req, res, next) => {
   Order.find({ "user.userId": req.user._id })
     .then((orders) => {
@@ -167,14 +196,34 @@ exports.getOrders = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 exports.getCheckout = (req, res, next) => {
+  let products;
+  let total = 0;
   req.user
     .populate("cart.items.productId")
     .then((user) => {
-      const products = user.cart.items;
-      let total = 0;
+      products = user.cart.items;
+      total = 0;
       products.forEach((p) => {
         total += p.quantity * p.productId.price;
       });
+      return stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: products.map((p) => {
+          return {
+            name: p.productId.title,
+            description: p.productId.description,
+            amount: p.productId.price * 100,
+            currency: "inr",
+            quantity: p.quantity,
+          };
+        }),
+        mode: "payment",
+        success_url:
+          req.protocol + "://" + req.get("host") + "/checkout/success",
+        cancel_url: req.protocol + "://" + req.get("host") + "/checkout/cancel",
+      });
+    })
+    .then((session) => {
       res.render("shop/checkout", {
         path: "/checkout",
         pageTitle: "Your Cart",
@@ -182,6 +231,7 @@ exports.getCheckout = (req, res, next) => {
         totalSum: total,
         errorMessage: req.flash("error"),
         success: req.flash("success"),
+        sessionId: session.id,
       });
     })
     .catch((err) => console.log(err));

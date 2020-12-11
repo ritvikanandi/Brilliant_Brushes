@@ -1,5 +1,6 @@
 .form-control {
     margin: 1rem 0;
+    background-color: #eee6ba;
 }
 
 .form-control label,
@@ -7,6 +8,10 @@
     display: block;
     width: 100%;
     margin-bottom: 0.25rem;
+    background-color: #eee6ba;
+    font-style: italic;
+    font-weight: bold;
+    color:black;
 }
 
 .form-control input {
@@ -20,6 +25,7 @@
     display: block;
     width: 100%;
     margin-bottom: 0.25rem;
+    background-color: #eee6ba;
 }
 
 .form-control textarea{
@@ -27,6 +33,7 @@
     font: inherit;
     border-radius: 2px;
     height: 6rem;
+    background-color: #eee6ba;
 }
 
 .form-control input:focus {
@@ -34,4 +41,8 @@
 }
 .form-control textarea:focus {
     outline-color: blue;
+}
+.forget{
+    text-decoration: underline;
+    color: white;
 }

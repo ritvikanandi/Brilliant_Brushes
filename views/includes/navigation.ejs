@@ -1,27 +1,27 @@
 <div class="backdrop"></div>
 <header class="main-header">
-    <button id="side-menu-toggle">Menu</button>
+    <button id="side-menu-toggle"><i class="fa fa-bars"></i></button>
     <nav class="main-header__nav">
         <ul class="main-header__item-list">
             <li class="main-header__item">
-                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
+                <a class="<%= path === '/' ? 'active' : '' %>" href="/"><i class="fa fa-windows"></i></a>
             </li>
             <li class="main-header__item">
-                <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Paintings</a>
+                <a class="<%= path === '/products' ? 'active' : '' %>" href="/products"><i class="fa fa-paint-brush"></i></a>
             </li>
             <% if (isAuthenticated) { %>
             <li class="main-header__item">
-                <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
+                <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart"><i class="fa fa-shopping-cart"></i></a>
             </li>
             <li class="main-header__item">
                 <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
             </li>
             <li class="main-header__item">
-                <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Painting
+                <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add <i class="fa fa-plus"></i>
                 </a>
             </li>
             <li class="main-header__item">
-                <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Paintings
+                <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin <i class="fa fa-paint-brush"></i>
                 </a>
             </li>
             <% } %>
@@ -32,7 +32,7 @@
                 <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
             </li>
             <li class="main-header__item">
-                <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
+                <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup"><i class="fa fa-user-plus"></i></a>
             </li>
             <% } else { %>
             <li class="main-header__item">
@@ -48,24 +48,24 @@
 <nav class="mobile-nav">
     <ul class="mobile-nav__item-list">
         <li class="mobile-nav__item">
-            <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
+            <a class="<%= path === '/' ? 'active' : '' %>" href="/"><i class="fa fa-windows"></i></a>
         </li>
         <li class="mobile-nav__item">
-            <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Paintings</a>
+            <a class="<%= path === '/products' ? 'active' : '' %>" href="/products"><i class="fa fa-paint-brush"></i></a>
         </li>
         <% if (isAuthenticated) { %>
             <li class="mobile-nav__item">
-                <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
+                <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart"><i class="fa fa-shopping-cart"></i></a>
             </li>
             <li class="mobile-nav__item">
                 <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
             </li>
             <li class="mobile-nav__item">
-                <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Painting
+                <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add <i class="fa fa-plus"></i>
                 </a>
             </li>
             <li class="mobile-nav__item">
-                <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Paintings
+                <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin <i class="fa fa-paint-brush"></i>
                 </a>
             </li>
         <% } %>
@@ -74,7 +74,7 @@
                 <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
             </li>
             <li class="mobile-nav__item">
-                <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
+                <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup"><i class="fa fa-user-plus"></i></a>
             </li>
         <% } else { %>
             <li class="mobile-nav__item">

@@ -1,4 +1,6 @@
 const path = require("path");
+const fs = require("fs");
+const https = require("https");
 const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./models/user");
@@ -7,17 +9,21 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 const flash = require("connect-flash");
 const multer = require("multer");
+const helmet = require("helmet");
+const compression = require("compression");
+const morgan = require("morgan");
 const errorController = require("./controllers/error");
-
-const uri =
-  "mongodb+srv://ritvika30:Perfect99@cluster0.b5wiw.mongodb.net/shop?retryWrites=true&w=majority";
+console.log(process.env.NODE_ENV);
+const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.b5wiw.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true`;
 
 const app = express();
 const store = new MongoDBStore({
-  uri: uri,
+  uri: MONGODB_URI,
   collection: "sessions",
 });
 const csrfProtection = csrf();
+const privateKey = fs.readFileSync("server.key");
+const certificate = fs.readFileSync("server.cert");
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");
@@ -43,7 +49,14 @@ app.set("views", "views");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
 
+app.use(helmet());
+app.use(compression());
+app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.urlencoded({ extended: true }));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
@@ -86,10 +99,14 @@ app.use(authRoutes);
 
 app.use(errorController.get404);
 mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+  })
   .then((result) => {
     console.log("Connection");
-    app.listen(3000);
+    // https
+    //   .createServer({ key: privateKey, cert: certificate }, app)
+    app.listen(process.env.PORT || 3000);
   })
   .catch((err) => {
     console.log(err);
