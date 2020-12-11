@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ritvikanandi/Shopping_hub.git"
+    "url": "git+https://github.com/ritvikanandi/Brilliant_Brushes.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ritvikanandi/Shopping_hub/issues"
+    "url": "https://github.com/ritvikanandi/Brilliant_Brushes/issues"
   },
-  "homepage": "https://github.com/ritvikanandi/Shopping_hub#readme",
+  "homepage": "https://github.com/ritvikanandi/Brilliant_Brushes#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
