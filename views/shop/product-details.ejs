@@ -11,6 +11,7 @@
     <h2 class="lead">₹<%= product.price%></h2>
     <p class="lead"><%= product.description %></p>
     <% if(isAuthenticated) { %>
+        <p class="lead">Contact the artist via:-<%= email %></p>
         <%- include('../includes/add-to-cart.ejs', {product: product}) %>
         <% } %>
     </main>

@@ -47,7 +47,10 @@ main {
   align-items: center;
   justify-content: space-between;
 }
-
+.forget{
+  text-decoration: underline;
+  color: white;
+}
 .main-header__item-list {
   list-style: none;
   margin: 0;

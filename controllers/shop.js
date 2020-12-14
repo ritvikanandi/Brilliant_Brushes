@@ -3,6 +3,7 @@ const path = require("path");
 const PDFDocument = require("pdfkit");
 const Product = require("../models/product");
 const Order = require("../models/order");
+const User = require("../models/user");
 const stripe = require("stripe")(`${process.env.STRIPE_KEY}`);
 
 const items_per_page = 4;
@@ -71,11 +72,20 @@ exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
   Product.findById(prodId)
     .then((product) => {
-      res.render("shop/product-details", {
-        product: product,
-        pageTitle: product.title,
-        path: "/products",
-      });
+      const userId = product.userId;
+      User.findById(userId)
+        .then((user) => {
+          const email = user.email;
+          res.render("shop/product-details", {
+            product: product,
+            pageTitle: product.title,
+            path: "/products",
+            email: email,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     })
     .catch((err) => {
       console.log(err);
@@ -127,14 +137,20 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
+  // Token is created using Checkout or Elements!
+  // Get the payment token ID submitted by the form:
+  const token = req.body.stripeToken; // Using Express
+  let totalSum = 0;
+
   req.user
     .populate("cart.items.productId")
     .then((user) => {
-      const products = user.cart.items.map((item) => {
-        return {
-          quantity: item.quantity,
-          product: { ...item.productId._doc },
-        };
+      user.cart.items.forEach((p) => {
+        totalSum += p.quantity * p.productId.price;
+      });
+
+      const products = user.cart.items.map((i) => {
+        return { quantity: i.quantity, product: { ...i.productId._doc } };
       });
       const order = new Order({
         user: {
@@ -146,42 +162,23 @@ exports.postOrder = (req, res, next) => {
       return order.save();
     })
     .then((result) => {
+      const charge = stripe.charges.create({
+        amount: totalSum * 100,
+        currency: "inr",
+        description: "Demo Order",
+        source: token,
+        metadata: { order_id: result._id.toString() },
+      });
       return req.user.clearCart();
     })
     .then(() => {
-      req.flash("success", "Order saved!");
       res.redirect("/orders");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+    });
 };
-exports.getCheckoutSuccess = (req, res, next) => {
-  req.user
-    .populate("cart.items.productId")
-    .then((user) => {
-      const products = user.cart.items.map((item) => {
-        return {
-          quantity: item.quantity,
-          product: { ...item.productId._doc },
-        };
-      });
-      const order = new Order({
-        user: {
-          email: req.user.email,
-          userId: req.user,
-        },
-        products: products,
-      });
-      return order.save();
-    })
-    .then((result) => {
-      return req.user.clearCart();
-    })
-    .then(() => {
-      req.flash("success", "Payment received!");
-      res.redirect("/orders");
-    })
-    .catch((err) => console.log(err));
-};
+
 exports.getOrders = (req, res, next) => {
   Order.find({ "user.userId": req.user._id })
     .then((orders) => {
@@ -196,45 +193,24 @@ exports.getOrders = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 exports.getCheckout = (req, res, next) => {
-  let products;
-  let total = 0;
   req.user
     .populate("cart.items.productId")
     .then((user) => {
-      products = user.cart.items;
-      total = 0;
+      const products = user.cart.items;
+      let total = 0;
       products.forEach((p) => {
         total += p.quantity * p.productId.price;
       });
-      return stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: products.map((p) => {
-          return {
-            name: p.productId.title,
-            description: p.productId.description,
-            amount: p.productId.price * 100,
-            currency: "inr",
-            quantity: p.quantity,
-          };
-        }),
-        mode: "payment",
-        success_url:
-          req.protocol + "://" + req.get("host") + "/checkout/success",
-        cancel_url: req.protocol + "://" + req.get("host") + "/checkout/cancel",
-      });
-    })
-    .then((session) => {
       res.render("shop/checkout", {
         path: "/checkout",
-        pageTitle: "Your Cart",
+        pageTitle: "Checkout",
         products: products,
         totalSum: total,
-        errorMessage: req.flash("error"),
-        success: req.flash("success"),
-        sessionId: session.id,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+    });
 };
 exports.getInvoice = (req, res, next) => {
   const orderId = req.params.orderId;
